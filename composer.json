@@ -1,0 +1,23 @@
+{
+    "name": "elderbraum/casa-lever",
+    "type": "wordpress-plugin",
+    "require": {
+        "yahnis-elsts/plugin-update-checker": "^4.9",
+        "dusank/knapsack": "^10.0",
+        "symfony/http-client": "^5.1"
+    },
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Mitch Hijlkema",
+            "email": "6103741+Pridestalker@users.noreply.github.com"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "CasaLever\\": "includes/",
+            "CasaLever\\Admin\\": "admin/",
+            "CasaLever\\Pub\\": "public/"
+        }
+    }
+}
