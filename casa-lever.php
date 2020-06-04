@@ -34,6 +34,7 @@ defined('WPINC') || exit(0);
  * Rename this for your plugin and update it as you release new versions.
  */
 define( 'CASA_LEVER_VERSION', '1.0.0' );
+define('CASA_LEVER_FILE', __FILE__);
 
 /**
  * The code that runs during plugin activation.

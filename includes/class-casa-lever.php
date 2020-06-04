@@ -83,6 +83,11 @@ class CasaLever {
 		$this->define_admin_hooks();
 		$this->define_public_hooks();
 
+		\Puc_v4_Factory::buildUpdateChecker(
+			'https://github.com/DoedeJaarsmaCommunicatie/Casa-Suppliers',
+			CASA_LEVER_FILE,
+			'casa-lever'
+		);
 	}
 
 	/**
