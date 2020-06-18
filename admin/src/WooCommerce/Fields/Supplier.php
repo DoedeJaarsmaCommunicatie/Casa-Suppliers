@@ -90,14 +90,10 @@ class Supplier extends Field
 
 	protected function getAutoFillValues()
     {
-	    $upload_dir = wp_upload_dir();
-
-        if(empty($upload_dir['basedir'])) {
-            return [];
-        }
+	    $upload_dir = WP_CONTENT_DIR . '/uploads';
 
         try {
-            $data = Yaml::parseFile($upload_dir['basedir'] . '/casalever-uploads/supplier.yaml');
+            $data = Yaml::parseFile($upload_dir . '/casalever-uploads/supplier.yaml');
         } catch (\Exception $e) {
             return [];
         }

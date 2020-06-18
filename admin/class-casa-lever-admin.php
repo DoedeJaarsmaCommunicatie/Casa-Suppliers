@@ -109,13 +109,9 @@ class CasaLever_Admin {
 	}
 
 	public function createUploadsDir() {
-		$upload_dir = wp_upload_dir();
+		$upload_dir = WP_CONTENT_DIR . '/uploads';
 
-		if (empty($upload_dir['basedir'])) {
-			return;
-		}
-
-		$dir = $upload_dir['basedir'] . '/' . 'casalever-uploads';
+		$dir = $upload_dir . '/' . 'casalever-uploads';
 
 
 		if (!file_exists($dir)) {
@@ -130,13 +126,9 @@ class CasaLever_Admin {
 		}
 
 		$name = $_POST['name'];
-		$upload_dir = wp_upload_dir();
+		$upload_dir = WP_CONTENT_DIR . '/uploads';
 
-		if(empty($upload_dir['basedir'])) {
-			return;
-		}
-
-		$file = $upload_dir['basedir'] . '/casalever-uploads/supplier.yaml';
+		$file = $upload_dir . '/casalever-uploads/supplier.yaml';
 
 		try {
 			$data = Yaml::parseFile($file);

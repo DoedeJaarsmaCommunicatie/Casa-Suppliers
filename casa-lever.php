@@ -16,7 +16,7 @@
  * Plugin Name:       Casa leverancier
  * Plugin URI:        https://casadelvino.nl/
  * Description:       Deze plugin voegt een leverancier veld toe aan producten, en synchroniseert deze over een multisite.
- * Version:           1.1.0
+ * Version:           1.1.1
  * Author:            Doede Jaarsma communicatie
  * Author URI:        https://doedejaarsma.nl/
  * License:           GPL-2.0+
@@ -33,7 +33,7 @@ defined('WPINC') || exit(0);
  * Start at version 1.0.0 and use SemVer - https://semver.org
  * Rename this for your plugin and update it as you release new versions.
  */
-define( 'CASA_LEVER_VERSION', '1.1.0' );
+define( 'CASA_LEVER_VERSION', '1.1.1' );
 define('CASA_LEVER_FILE', __FILE__);
 
 /**
