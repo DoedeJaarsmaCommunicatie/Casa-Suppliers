@@ -2,6 +2,8 @@
 
 namespace CasaLever\Admin\WooCommerce\Fields;
 
+use Symfony\Component\Yaml\Yaml;
+
 class Supplier extends Field
 {
 	const META_KEY = 'casalever_product_supplier';
@@ -17,13 +19,14 @@ class Supplier extends Field
 			'class' => 'casalever-custom-field',
 			'desc_tip' => true,
 			'description' => __('De leverancier waar de wijn vandaan komt', 'casalever'),
+            'options' => $this->getAutoFillValues()
 		];
 	}
 
 	public function store($post_id)
 	{
 		$product = wc_get_product($post_id);
-		$supplier = isset($_POST[static::META_KEY]) ? $_POST[static::META_KEY] : '';
+		$supplier = $_POST[ static::META_KEY ]?? '';
 
 		$product->update_meta_data(static::META_KEY, sanitize_text_field($supplier));
 		$product->save();
@@ -62,6 +65,43 @@ class Supplier extends Field
 
 	public function register()
 	{
-		woocommerce_wp_text_input($this->get_args());
+		woocommerce_wp_select($this->get_args());
+		?>
+		<p class="form-field">
+			<button class="button js-open-new-supplier-modal" type="button">Nieuwe leverancier toevoegen</button>
+		</p>
+
+		<template id="template-modal-card">
+			<div class="dialog-backdrop">
+				<div class="dialog">
+					<form id="new-supplier-form">
+						<p class="form-field">
+							<label for="name">Naam</label>
+							<input id="name" name="name" value="">
+						</p>
+
+						<button class="button primary">Toevoegen</button>
+					</form>
+				</div>
+			</div>
+		</template>
+<?php
 	}
+
+	protected function getAutoFillValues()
+    {
+	    $upload_dir = wp_upload_dir();
+
+        if(empty($upload_dir['basedir'])) {
+            return [];
+        }
+
+        try {
+            $data = Yaml::parseFile($upload_dir['basedir'] . '/casalever-uploads/supplier.yaml');
+        } catch (\Exception $e) {
+            return [];
+        }
+
+	    return $data['autofill'] ?? $data;
+    }
 }

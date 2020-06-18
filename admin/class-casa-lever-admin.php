@@ -2,6 +2,7 @@
 
 namespace CasaLever\Admin;
 
+use Symfony\Component\Yaml\Yaml;
 use CasaLever\Admin\WooCommerce\Fields\Supplier;
 use CasaLever\Admin\WooCommerce\Fields\FieldManager;
 
@@ -105,7 +106,55 @@ class CasaLever_Admin {
 		 */
 
 		wp_enqueue_script( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'js/casa-lever-admin.js', array( 'jquery' ), $this->version, false );
-
 	}
 
+	public function createUploadsDir() {
+		$upload_dir = wp_upload_dir();
+
+		if (empty($upload_dir['basedir'])) {
+			return;
+		}
+
+		$dir = $upload_dir['basedir'] . '/' . 'casalever-uploads';
+
+
+		if (!file_exists($dir)) {
+			wp_mkdir_p($dir);
+		}
+	}
+
+	public function handle_new_supplier()
+	{
+		if (!isset($_POST['name'])) {
+			return;
+		}
+
+		$name = $_POST['name'];
+		$upload_dir = wp_upload_dir();
+
+		if(empty($upload_dir['basedir'])) {
+			return;
+		}
+
+		$file = $upload_dir['basedir'] . '/casalever-uploads/supplier.yaml';
+
+		try {
+			$data = Yaml::parseFile($file);
+		} catch (\Exception $e) {
+			return;
+		}
+
+		$data['autofill'][sanitize_title($name)] = $name;
+
+		$ymlData = Yaml::dump($data);
+		file_put_contents($file, $ymlData);
+
+		wp_send_json_success([
+			'options' => $data,
+			'new' => [
+				'key' => sanitize_title($name),
+				'val' => $name,
+			],
+		]);
+	}
 }

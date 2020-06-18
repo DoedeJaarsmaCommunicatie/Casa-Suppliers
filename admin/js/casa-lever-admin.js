@@ -29,4 +29,86 @@
 	 * practising this, we should strive to set a better example in our own work.
 	 */
 
+	$(document).ready(() => {
+		openSupplierModal();
+	})
+
 })( jQuery );
+
+
+function openSupplierModal() {
+	const button = document.querySelector('.js-open-new-supplier-modal'),
+		template = document.querySelector('#template-modal-card');
+
+	if (!button || !template) {
+		return;
+	}
+
+	button.addEventListener('click', () => {
+		const dialog = template.content.cloneNode(true);
+
+		document.body.append(dialog);
+		addSubmitListener();
+		closeDialogListener();
+	})
+}
+
+function addSubmitListener() {
+	const dialogContainer = document.querySelector('.dialog-backdrop'),
+		dialog = dialogContainer.querySelector('.dialog'),
+		form = dialog.querySelector('form');
+
+	form.addEventListener('submit', (e) => {
+		e.preventDefault();
+		jQuery.ajax({
+			url: '/wp-admin/admin-ajax.php',
+			method: 'POST',
+			data: {
+				action: 'add_new_supplier',
+				name: e.target.querySelector('#name').value
+			}
+		}).then(res => {
+			if (res) {
+				console.dir(res);
+
+				const select = document.querySelector('#casalever_product_supplier');
+				pushNewOption(
+					select,
+					res.data.new.key,
+					res.data.new.val
+				)
+			}
+			closeDialog(dialogContainer);
+		})
+
+	})
+}
+
+function pushNewOption(select, key, value) {
+	const option = document.createElement('option');
+	option.setAttribute('value', key);
+	option.innerHTML = value;
+
+	select.append(option);
+}
+
+function closeDialogListener() {
+	const dialogContainer = document.querySelector('.dialog-backdrop'),
+		dialog = dialogContainer.querySelector('.dialog');
+
+	dialogContainer.addEventListener('click', (e) => {
+		if (e.target === dialog || dialog.contains(e.target)) {
+			return;
+		}
+
+		closeDialog(dialogContainer);
+	})
+}
+
+function closeDialog(dialogContainer = null) {
+	if (!dialogContainer) {
+		dialogContainer = document.querySelector('.dialog-backdrop')
+	}
+
+	dialogContainer.parentNode.removeChild(dialogContainer);
+}
