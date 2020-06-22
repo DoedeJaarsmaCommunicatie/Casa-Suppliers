@@ -25,6 +25,10 @@ class Supplier extends Field
 
 	public function store($post_id)
 	{
+	    if (defined('DOING_AJAX') && DOING_AJAX) {
+	        return;
+        }
+
 		$product = wc_get_product($post_id);
 		$supplier = $_POST[ static::META_KEY ]?? '';
 
@@ -56,6 +60,7 @@ class Supplier extends Field
 		if (!$parentProductID) {
 			return; // If no parent product exists, skip this action.
 		}
+
 		$current_blog = get_current_blog_id();
 		switch_to_blog($parentID);
 		update_post_meta($parentProductID, static::META_KEY, $supplier);
