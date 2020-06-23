@@ -30,7 +30,10 @@ class Supplier extends Field
         }
 
 		$product = wc_get_product($post_id);
-		$supplier = $_POST[ static::META_KEY ]?? '';
+	    if (empty($_POST[static::META_KEY])) {
+	        return;
+        }
+		$supplier = $_POST[static::META_KEY]?? '';
 
 		$product->update_meta_data(static::META_KEY, sanitize_text_field($supplier));
 		$product->save();

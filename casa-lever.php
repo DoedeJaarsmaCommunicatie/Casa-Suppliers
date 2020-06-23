@@ -16,7 +16,7 @@
  * Plugin Name:       Casa leverancier
  * Plugin URI:        https://casadelvino.nl/
  * Description:       Deze plugin voegt een leverancier veld toe aan producten, en synchroniseert deze over een multisite.
- * Version:           1.1.2
+ * Version:           1.1.3
  * Author:            Doede Jaarsma communicatie
  * Author URI:        https://doedejaarsma.nl/
  * License:           GPL-2.0+
