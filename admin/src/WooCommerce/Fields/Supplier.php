@@ -29,11 +29,21 @@ class Supplier extends Field
 	        return;
         }
 
+	    if (get_post_type($post_id) !== 'product') {
+	        return; //Not a product
+        }
+
 		$product = wc_get_product($post_id);
+
 	    if (empty($_POST[static::META_KEY])) {
 	        return;
         }
+
 		$supplier = $_POST[static::META_KEY]?? '';
+
+	    if ($supplier === $product->get_meta(static::META_KEY)) {
+	        return; // Skip this when it already exists as this one.
+        }
 
 		$product->update_meta_data(static::META_KEY, sanitize_text_field($supplier));
 		$product->save();
